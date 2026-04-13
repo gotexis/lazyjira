@@ -1,0 +1,57 @@
+name: ✨ Feature Request
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your idea! Please describe the feature you'd like.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: "Describe the problem or workflow gap."
+      placeholder: "I frequently need to ... but lazyjira doesn't support ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would the ideal solution look like?
+      description: "How would you use this feature? Show the command(s) you'd like."
+      placeholder: |
+        ```bash
+        lazyjira boards list
+        lazyjira boards view BOARD-1
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: "How do you currently work around this? (if applicable)"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: importance
+    attributes:
+      label: How important is this to you?
+      options:
+        - Nice to have
+        - Important — I use a workaround
+        - Critical — blocks my workflow
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: "Links, screenshots, related issues, etc."
+    validations:
+      required: false
