@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lazyjira"
-version = "0.1.1"
+version = "0.1.2"
 description = "Zero-dependency CLI for Jira Cloud REST API"
 readme = "README.md"
 license = "MIT"
