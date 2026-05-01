@@ -15,9 +15,12 @@ def cmd_move(args: Any) -> None:
     if success:
         print(f"✅ {args.key} → {args.status}")
     else:
-        print(f"❌ Could not transition {args.key} to '{args.status}'", file=sys.stderr)
+        # Fetch current status for a better error message
+        issue = jira_api("GET", f"/rest/api/3/issue/{args.key}?fields=status")
+        current = issue.get("fields", {}).get("status", {}).get("name", "unknown") if not issue.get("error") else "unknown"
+        print(f"❌ Could not transition {args.key} to '{args.status}' (currently: {current})", file=sys.stderr)
         transitions = jira_api("GET", f"/rest/api/3/issue/{args.key}/transitions")
         if not transitions.get("error"):
             avail = [t["to"]["name"] for t in transitions.get("transitions", [])]
-            print(f"Available transitions: {', '.join(avail)}", file=sys.stderr)
+            print(f"Available transitions: {', '.join(avail) or '(none — may be a terminal state)'}", file=sys.stderr)
         sys.exit(1)

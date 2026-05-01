@@ -73,7 +73,18 @@ def is_jpd(project_key: str) -> bool:
 
 
 def transition_issue(key: str, target_status: str) -> bool:
-    """Transition an issue to the target status. Returns True on success."""
+    """Transition an issue to the target status. Returns True on success.
+
+    If the issue is already at the target status, returns True (idempotent).
+    """
+    # Check current status first — if already there, succeed immediately
+    issue = jira_api("GET", f"/rest/api/3/issue/{key}?fields=status")
+    if issue.get("error"):
+        return False
+    current_status = issue.get("fields", {}).get("status", {}).get("name", "")
+    if current_status.lower() == target_status.lower():
+        return True  # Already at target — idempotent success
+
     transitions = jira_api("GET", f"/rest/api/3/issue/{key}/transitions")
     if transitions.get("error"):
         return False
